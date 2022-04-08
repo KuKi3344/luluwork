@@ -169,12 +169,12 @@
 		max-width: 750px auto;
 		z-index: -100;
 		display: flex;
-		background: linear-gradient(#191944, #1e274b, #33426a, #3e5483);
+		background: linear-gradient(#518755, #63a584, #89ba80, #9cc394);
 		justify-content: center;
 		align-items: center;
 	}
 	.form h2{
-		margin-bottom: 30px;
+		margin-bottom: 40px;
 		padding: 0;
 		color: #fff;
 		text-align: center;
@@ -192,7 +192,7 @@
 	.form {
 		min-width: 300px;
 		max-width: 700px;
-		height: 300px;
+		height: 260px;
 		background: rgba(36, 36, 36, 0.5);
 		box-shadow: 0 15px 25px rgba(31, 31, 31, 0.6);
 		border-radius: 10px;
@@ -331,7 +331,7 @@
 		top:46%;
 		transform: translate(10%,-50%);
 		padding:30px 10px 10px 20px;
-		background: linear-gradient(#222c4b, #33426a, #3e5483);
+		background:#fff;
 		border-radius:5px;
 		z-index:100;
 	}

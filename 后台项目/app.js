@@ -7,18 +7,21 @@ const cors = require('cors')
 app.use(cors())
 //解析表单数据，只能解析application/x-www-form-urlencoded格式的表单数据
 app.use(express.urlencoded({extended:false}))
-
+//解析body里面的数据
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 const expressJWT = require('express-jwt')
 const secretKey = 'kukiqwq55'
 //中间件解析请求头部Authorization中携带的token
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+//解析header携带的token，并挂载到req.user上面
 app.use(expressJWT({
 	secret: secretKey,
 	algorithms: ['HS256']
 }).unless({
 	path: [/^\/api\//] 
 }))
+
+
 //路由
 const userRouter = require('./router/user')
 app.use('/api',userRouter)

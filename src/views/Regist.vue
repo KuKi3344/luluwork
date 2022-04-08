@@ -238,7 +238,7 @@
 		max-width: 750px auto;
 		z-index: -100;
 		display: flex;
-		background: linear-gradient(#191944, #1e274b, #33426a, #3e5483);
+		background: linear-gradient(#518755, #63a584, #89ba80, #9cc394);
 		justify-content: center;
 		align-items: center;
 	}
@@ -255,7 +255,7 @@
 		min-width: 300px;
 		max-width: 700px;
 		height: 420px;
-		background: rgba(36, 36, 36, 0.5);
+		background: rgba(56, 56, 56, 0.5);
 		box-shadow: 0 15px 25px rgba(31, 31, 31, 0.6);
 		border-radius: 10px;
 		padding: 30px;

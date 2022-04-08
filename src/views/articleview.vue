@@ -1,33 +1,63 @@
 <template>
-	<div class="articleview">
-		<div class="top">
-			<div class="title">{{article.title}}</div>
-			<div class="summary">{{article.summary}}</div>
-			<div class="category">
-				{{article.category.name}}&ensp;|&ensp;评论数:{{comment.length}}&ensp;|&ensp;{{article.first_pub | format}}
+	<div>
+		<div class="articleview">
+			<div class="top">
+				<div class="title">{{article.title}}</div>
+				<div class="summary">{{article.summary}}</div>
+				<div class="category">
+					{{article.category.name}}&ensp;|&ensp;评论数:{{comment.length}}&ensp;|&ensp;{{article.first_pub | format}}
+				</div>
+				<div class="author">
+					<img @click="view(article.author.id)" v-if="article.author.face" :src="article.author.face" alt="">
+					<img @click="view(article.author.id)" v-else :src="imgsrc">
+					<a @click="view(article.author.id)" class="name">{{article.author.nickname}}</a>
+				</div>
 			</div>
-			<div class="author">
-				<img @click="view(article.athor.id)" v-if="article.author.face" :src="article.author.face" alt="">
-				<img @click="view(article.athor.id)" v-else :src="imgsrc">
-				<a @click="view(article.athor.id)" class="name">{{article.author.nickname}}</a>
+			<div class="main">
+				{{article.content}}
 			</div>
+			<div class="comment">
+				<div class="me-view-comment-write">
+					<el-row>
+
+						<div width="40" height="40" style="display: flex;margin-bottom: 10px;">
+							<a style="margin-right: 5px;">
+								<div class="picture">
+									<img class="me-view-picture" :src="user.face">
+								</div>
+							</a>
+							<el-input type="textarea" :autosize="{ minRows: 2}" placeholder="你的评论..." maxlength="300"
+								class="me-view-comment-text" v-model="subcomment.content" resize="none">
+							</el-input>
+						</div>
+						<el-button type="button" size="small" round @click="publishComment()" style="float: right;">评论
+						</el-button>
+					</el-row>
+
+				</div>
+
+				<div style="opacity: 1;padding:5px,20px;background:rgba(255,255,255,0.8);border-radius: 8px;"
+					v-if="comment.length>0">
+					<div class="me-view-comment-title">
+						<span>{{comment.length}} 条评论</span>
+					</div>
+					<commentview v-for="comment in comment" :key="comment.id" :comment="comment" :id="comment.id" @getcomment = "getcomment"
+						class="comment">
+					</commentview>
+
+				</div>
+				<el-empty description="暂无评论" v-else></el-empty>
+			</div>
+			<el-skeleton :rows="15" animated :loading="loading" />
 		</div>
-		<div class="main">
-			{{article.content}}
-		</div>	
-		<div class="comment">
-			<commentview v-for="comment in comment" :key="comment.id" :comment="comment" :id="comment.id"
-					class="comment">
-				</commentview>
-		</div>
-				
 	</div>
 </template>
 
 <script>
 	import {
 		getonearticle,
-		getcomment
+		getcomment,
+		recall
 	} from '../api/api.js'
 	import commentview from '../components/commentview.vue'
 	export default {
@@ -37,6 +67,7 @@
 		},
 		data() {
 			return {
+				loading: true,
 				user: JSON.parse(window.sessionStorage.getItem('user')),
 				article: {
 					id: '',
@@ -67,7 +98,10 @@
 		},
 		created() {
 			this.getthisarticle(this.$route.params.id);
-			this.getcomment(this.$route.params.id)
+			this.getcomment()
+		},
+		mounted() {
+			this.loading = false;
 		},
 		methods: {
 			getthisarticle(id) {
@@ -79,11 +113,11 @@
 					}
 				})
 			},
-			getcomment(id) {
-				getcomment(id).then(resp => {
+			getcomment() {
+				getcomment(this.$route.params.id).then(resp => {
 					if (resp.data.code == 200) {
 						this.comment = resp.data.data.filter(item => item.level == 1);
-						console.log(this.comment)
+						document.title = `${this.article.title} —— LULU Work`
 					} else {
 						this.$message.warning(resp.data.message)
 					}
@@ -91,7 +125,16 @@
 				})
 			},
 			publishComment() {
-
+				this.subcomment.articleId = this.$route.params.id;
+				recall(this.subcomment).then(resp => {
+					if (resp.data.code == 200) {
+						this.$message.success("评论成功")
+						this.getcomment();
+						this.subcomment.content = '';
+					} else {
+						this.$message.error(resp.data.message)
+					}
+				})
 			},
 			view(id) {
 				this.$router.push(`/userinfo/${id}`)
@@ -159,5 +202,52 @@
 		line-height: 25px;
 		min-height: 300px;
 		border-bottom: 1px solid #dfdfdf;
+	}
+
+	.me-view-comment {
+		margin-top: 60px;
+	}
+
+	.me-view-comment-title {
+		font-weight: 600;
+		border-bottom: 1px solid #f0f0f0;
+		padding: 15px;
+	}
+
+	.el-button {
+		margin-bottom: 10px;
+	}
+
+	.me-view-comment-write {
+		margin-top: 20px;
+	}
+
+	.me-view-comment-text {
+		font-size: 13px;
+	}
+
+	.comment {
+		border-bottom: 1px solid #dcdcdc;
+		margin-top: 20px;
+		padding: 10px;
+	}
+
+	.picture {
+		width: 40px;
+		height: 40px;
+		overflow: hidden;
+		border-radius: 50%;
+		display: flex;
+		justify-content: center;
+		margin: 0;
+	}
+
+	.me-view-picture {
+		width: auto;
+		height: 40px;
+		border: 1px solid #ddd;
+		vertical-align: middle;
+		background-color: #5fb878;
+		padding: 0;
 	}
 </style>

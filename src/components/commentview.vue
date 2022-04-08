@@ -1,7 +1,7 @@
 <template>
 	<div class="comment">
 		<ul>
-			<div style="display: flex;align-items: center;">
+			<div style="display: flex;align-items: center;margin-bottom:5px;">
 				<router-link :to="'/userinfo/'+ comment.author.id">
 					<div class="mypic">
 						<img :src="comment.author.face" class="authorface" v-if="comment.author.face">
@@ -74,7 +74,6 @@
 				getcomment(this.$route.params.id).then(resp=>{
 					if(resp.data.code==200){
 						this.level2 = resp.data.data.filter(item=>item.level ==2).filter(item => item.parentid == this.comment.id);
-						console.log(this.level2)
 					}
 				})
 			},
@@ -231,6 +230,8 @@
 	.commentcontent {
 		font-size: 15px;
 		color: #393939;
+		margin:10px;
+		margin-left: 0;
 	}
 	
 	.createtime {
