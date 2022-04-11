@@ -6,7 +6,7 @@
 				style="flex:1;margin-bottom: 10px;z-index: 99;">
 			</articleitem>
 		</div>
-		<div style="width: 100%;display: flex;justify-content: center;">
+		<div style="width: 100%;display: flex;justify-content: center;margin-top: 20px;">
 			<el-pagination background layout="prev, pager, next" :page-count="pagesum" :current-page.sync="pager"
 				@current-change="handleCurrentChange">
 			</el-pagination>
@@ -15,12 +15,15 @@
 </template>
 
 <script>
-	import{ getarticle} from '../api/api.js'
+	import{ getarticle,getarticlebycate} from '../api/api.js'
 	import articleitem from './articleitem.vue'
 	export default {
 		name: 'articlepage',
 		components:{
 			articleitem
+		},
+		props:{
+			category:String
 		},
 		data() {
 			return {
@@ -33,7 +36,13 @@
 		created() {
 			this.getarticle();
 		},
-
+		watch:{
+			category() {
+				this.articles = [];
+				this.pager = 1;
+				this.getarticle();
+			},
+		},
 		methods: {
 			getcurrentarticle() {
 				let pager = this.pager;
@@ -46,7 +55,8 @@
 				this.getcurrentarticle();
 			},
 			getarticle() {
-				getarticle().then(resp=>{
+				if(this.$route.params.id){
+					getarticlebycate(this.category).then(resp=>{
 					if(resp.data.code == 200){
 						this.articles = resp.data.data;
 						this.pagesum = Math.ceil(this.articles.length / 12);
@@ -55,6 +65,18 @@
 						this.$message.warning('获取文章失败，请稍后再试');
 					}
 				})
+				}else{
+					getarticle().then(resp=>{
+					if(resp.data.code == 200){
+						this.articles = resp.data.data;
+						this.pagesum = Math.ceil(this.articles.length / 12);
+						this.getcurrentarticle();
+					}else{
+						this.$message.warning('获取文章失败，请稍后再试');
+					}
+				})
+				}
+				
 			}
 		}
 	}
@@ -68,6 +90,7 @@
 		margin-top: 20px;
 		border-radius: 10px;
 		z-index: 0;
+
 	}
 	.main{
 		display: flex;

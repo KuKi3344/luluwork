@@ -145,9 +145,7 @@
 
 <style scoped="scoped">
 	.articleview {
-		margin-left: 200px;
 		margin-top: 20px;
-		margin-right: 30px;
 		max-width: 1300px;
 		min-width: 400px;
 		min-height: 700px;

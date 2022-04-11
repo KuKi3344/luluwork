@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '../views/Index.vue'
+const originalPush = VueRouter.prototype.push;
+// 修改原型对象中的push方法
+VueRouter.prototype.push = function push(location) {
+	return originalPush.call(this, location).catch(err => err)
+}
 Vue.use(VueRouter)
 
 const routes = [{
@@ -19,7 +24,7 @@ const routes = [{
 	},
 	{
 		path: '/index',
-		component:Index,
+		component: Index,
 		redirect: '/Home',
 		children: [{
 				path: '/Home',
@@ -27,10 +32,15 @@ const routes = [{
 				component: () => import( /* webpackChunkName: "about" */ '../views/Home.vue')
 			},
 			{
-					path: '/article/:id',
-					name: '查看文章',
-					component: () => import( /* webpackChunkName: "about" */ '../views/articleview.vue')
-				}
+				path: '/article/:id',
+				name: '查看文章',
+				component: () => import( /* webpackChunkName: "about" */ '../views/articleview.vue')
+			},
+			{
+					path: '/category/all/:id?',
+					name: '文章分类',
+					component: () => import( /* webpackChunkName: "about" */ '../views/Category.vue')
+				},
 		]
 	},
 

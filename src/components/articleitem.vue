@@ -19,7 +19,7 @@
 
 			<div class="foot">
 				<span class="category">
-					<el-tag>{{category.name}}</el-tag>
+					<el-tag size="small">{{category.name}}</el-tag>
 				</span>
 				<div class="me-pull-right me-article-count">
 					<i class="el-icon-time"></i>&nbsp;{{first_pub | format}}

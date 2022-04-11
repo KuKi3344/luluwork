@@ -78,9 +78,7 @@
 </script>
 <style scoped="scoped">
 	.home {
-		margin-left: 200px;
 		margin-top: 20px;
-		margin-right: 30px;
 		max-width: 1300px;
 		min-width: 400px;
 		min-height: 650px;

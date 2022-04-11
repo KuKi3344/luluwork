@@ -14,7 +14,9 @@ import {
 	setCookieValue,
 	clearCookie
 } from './assets/js/cookie.js'
-import {getuserinfo} from './api/api.js'
+import {
+	getuserinfo
+} from './api/api.js'
 import {
 	formatTime
 } from './assets/js/time.js'
@@ -42,25 +44,31 @@ axios.interceptors.request.use(config => {
 
 router.beforeEach((to, from, next) => {
 	if (getCookieValue('Authorization')) {
-		getuserinfo().then(resp => {
-			if (resp.data.data != null) {
-				window.sessionStorage.setItem('user', JSON.stringify(resp.data.data));
-				store.state.id = resp.data.data.id;
-				store.state.login = true;		
-					document.title=`${to.name}	-	LULU WORK`
-				next();
-			} else {
-				clearCookie('Authorization');
-				Message.error("登陆超时，请重新登录");
-			}
-		})
+		if (JSON.parse(window.sessionStorage.getItem('user'))) {
+			document.title = `${to.name}	-	LULU WORK`
+			next();
+		} else {
+			getuserinfo().then(resp => {
+				if (resp.data.data != null) {
+					window.sessionStorage.setItem('user', JSON.stringify(resp.data.data));
+					store.state.id = resp.data.data.id;
+					store.state.login = true;
+					document.title = `${to.name}	-	LULU WORK`
+					next();
+				} else {
+					clearCookie('Authorization');
+					Message.error("登陆超时，请重新登录");
+				}
+			})
+
+		}
 
 	}
 	if (!getCookieValue('Authorization')) {
 		//如果没有token就拦截，如果去登录页面不拦截，如果去别的就给调到404页面
-		if (to.path == '/Login'||to.path == '/Regist') {
-			document.title=`${to.name}	-	LULU WORK`;
-			next();		
+		if (to.path == '/Login' || to.path == '/Regist') {
+			document.title = `${to.name}	-	LULU WORK`;
+			next();
 		} else {
 			Message.error("请先登录");
 		}
@@ -68,7 +76,7 @@ router.beforeEach((to, from, next) => {
 })
 Vue.filter('format', formatTime)
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+	router,
+	store,
+	render: h => h(App)
 }).$mount('#app')

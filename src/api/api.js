@@ -65,4 +65,29 @@ export function deletecomment(id){
 		},
 	})
 }
+export function getallcategory(){
+	return axios({
+		method:'get',
+		url:`${base}/category/all`,
+	})
+}
+export function getarticlebycate(id){
+	return axios({
+		method:'get',
+		url:`${base}/article/category/${id}`,
+	})
+}
+export function getcatebyid(id){
+	return axios({
+		method:'get',
+		url:`${base}/category/get/${id}`,
+	})
+}
+export function addcategory(data){
+	return axios({
+		method:'post',
+		url:`${base}/category/add`,
+		data:data
+	})
+}
 

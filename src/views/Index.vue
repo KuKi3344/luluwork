@@ -5,7 +5,10 @@
 				class="img">
 		</div>
 		<homehead  class="homeheader"></homehead>
-		<router-view></router-view>
+		<div style="margin-left: 200px;margin-right: 30px;">
+			<router-view></router-view>
+		</div>
+		
 	</div>
 </template>
 

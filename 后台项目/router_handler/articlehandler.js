@@ -202,7 +202,7 @@ exports.getmypubarticle = (req,res)=>{
 //通过分类获取文章
 exports.getcatearticle = (req,res)=>{
 	const sql =
-		'select articles.*,article_cate.name,user.nickname from articles,article_cate,user where articles.state = 1 and articles.ispub = "发布" and user.id = articles.authorid and article_cate.id = articles.categoryid and article_cate.id = ? order by articles.first_pub asc'
+		'select articles.*,article_cate.name,user.nickname from articles,article_cate,user where articles.state = 1 and articles.ispub = "发布" and user.id = articles.authorid and article_cate.id = articles.categoryid and article_cate.id = ? order by articles.firstpub asc'
 	db.query(sql,req.params.id,(err,result)=>{
 		if (err) return res.send({
 			code: 500,
