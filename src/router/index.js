@@ -23,6 +23,11 @@ const routes = [{
 		component: () => import( /* webpackChunkName: "about" */ '../views/Login.vue')
 	},
 	{
+		path: '/write/:id?',
+		name: '文章分类',
+		component: () => import( /* webpackChunkName: "about" */ '../views/Write.vue')
+	},
+	{
 		path: '/index',
 		component: Index,
 		redirect: '/Home',
@@ -37,10 +42,15 @@ const routes = [{
 				component: () => import( /* webpackChunkName: "about" */ '../views/articleview.vue')
 			},
 			{
-					path: '/category/all/:id?',
-					name: '文章分类',
-					component: () => import( /* webpackChunkName: "about" */ '../views/Category.vue')
-				},
+				path: '/category/all/:id?',
+				name: '文章分类',
+				component: () => import( /* webpackChunkName: "about" */ '../views/Category.vue')
+			},
+			{
+				path: '/userinfo/:id',
+				name: '文章分类',
+				component: () => import( /* webpackChunkName: "about" */ '../views/Userinfo.vue')
+			},
 		]
 	},
 

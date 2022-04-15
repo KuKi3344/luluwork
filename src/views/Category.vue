@@ -38,7 +38,7 @@
 				</div>
 				<articlepage :category="$route.params.id"></articlepage>
 			</el-main>
-			<el-dialog title="收货地址" :visible.sync="addview" append-to-body top="50px" width="500px" >
+			<el-dialog title="分类信息" :visible.sync="addview" append-to-body top="50px" width="500px" >
 				<el-form :model="addcateform" ref="addcateform" :rules="rules">
 					<el-form-item label="分类名称" >
 						<el-input v-model="addcateform.name"></el-input>

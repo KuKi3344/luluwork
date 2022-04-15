@@ -6,7 +6,7 @@
 				style="flex:1;margin-bottom: 10px;z-index: 99;">
 			</articleitem>
 		</div>
-		<div style="width: 100%;display: flex;justify-content: center;margin-top: 20px;">
+		<div style="width: 100%;display: flex;justify-content: center;margin-top: 20px;margin-bottom: 20px;">
 			<el-pagination background layout="prev, pager, next" :page-count="pagesum" :current-page.sync="pager"
 				@current-change="handleCurrentChange">
 			</el-pagination>

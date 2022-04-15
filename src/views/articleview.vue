@@ -5,12 +5,19 @@
 				<div class="title">{{article.title}}</div>
 				<div class="summary">{{article.summary}}</div>
 				<div class="category">
-					{{article.category.name}}&ensp;|&ensp;评论数:{{comment.length}}&ensp;|&ensp;{{article.first_pub | format}}
+					{{article.category.name}}&ensp;&ensp;|&ensp;&ensp;评论数:{{comment.length}}&ensp;&ensp;|&ensp;{{article.first_pub | format}}
 				</div>
 				<div class="author">
 					<img @click="view(article.author.id)" v-if="article.author.face" :src="article.author.face" alt="">
 					<img @click="view(article.author.id)" v-else :src="imgsrc">
 					<a @click="view(article.author.id)" class="name">{{article.author.nickname}}</a>
+				</div>
+				<div style="display: flex;align-items: flex-end;margin-top: 20px;"
+					v-if="user.id == article.author.id">
+					<el-button @click="editArticle()" size="small" icon="el-icon-edit" type="primary"
+						circle></el-button>
+					<el-button type="danger" icon="el-icon-delete" size="small" circle @click="deletearticle()">
+					</el-button>
 				</div>
 			</div>
 			<div class="main">
@@ -57,7 +64,8 @@
 	import {
 		getonearticle,
 		getcomment,
-		recall
+		recall,
+		deletearticle
 	} from '../api/api.js'
 	import commentview from '../components/commentview.vue'
 	export default {
@@ -136,6 +144,35 @@
 					}
 				})
 			},
+			editArticle(){
+				this.$router.push({
+					path: `/write/${this.article.id}`
+				})
+			},
+			deletearticle(){
+					this.$confirm('文章将会删除, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(() => {
+						this.delete();
+					}).catch(() => {
+						this.$message({
+							type: 'info',
+							message: '已取消'
+						})
+					});
+			},
+			delete(){
+				deletearticle(this.article.id).then(resp => {
+					if (resp.data.code == 200) {
+						this.$message.success("删除成功")
+						this.$router.replace('/Home')
+					} else {
+						this.$message.error(resp.data.message)
+					}
+				})
+			},
 			view(id) {
 				this.$router.push(`/userinfo/${id}`)
 			}
@@ -156,7 +193,8 @@
 	.top {
 		width: 100%;
 		color: #ffffff;
-		height: 250px;
+		height: 350px;
+		padding-top: 30px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -174,7 +212,7 @@
 
 	.summary,
 	.category {
-		margin-top: 10px;
+		margin-top: 20px;
 		font-size: 13px;
 	}
 
@@ -182,7 +220,7 @@
 		display: flex;
 		justify-content: space-around;
 		align-items: center;
-		margin-top: 10px;
+		margin-top: 20px;
 	}
 
 	.author img {

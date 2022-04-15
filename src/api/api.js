@@ -90,4 +90,27 @@ export function addcategory(data){
 		data:data
 	})
 }
+export function editarticle(data){
+	return axios({
+		method:'post',
+		url:`${base}/article/update`,
+		data:data
+	})
+}
 
+export function deletearticle(id){
+	return axios({
+		method:'post',
+		url:`${base}/article/delete`,
+		data:{
+			id:id
+		}
+	})
+}
+export function publisharticle(data){
+	return axios({
+		method:'post',
+		url:`${base}/article/publish`,
+		data:data
+	})
+}
