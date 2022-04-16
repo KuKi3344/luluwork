@@ -31,19 +31,19 @@
 					</el-input>
 				</el-form-item>
 				<div>
-					<a @click="dosubmit" class="one">
-						<span></span>
-						<span></span>
-						<span></span>
-						<span></span>
-						Submit
-					</a>
-					<a @click="tologin" class="two">
+					<a @click="tologin" class="one">
 						<span></span>
 						<span></span>
 						<span></span>
 						<span></span>
 						tologin
+					</a>
+					<a @click="dosubmit" class="two">
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+						Submit
 					</a>
 				</div>
 			</el-form>
@@ -166,6 +166,7 @@
 									message: '注册成功',
 									type: 'success'
 								});
+								this.$router.replace('/Login')
 							} else {
 								this.$message({
 									message: resp.data.message,

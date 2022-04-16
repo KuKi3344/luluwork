@@ -116,13 +116,20 @@ exports.getallarticle = (req, res) => {
 }
 //查询某个文章
 exports.getsomearticle = (req, res) => {
+	let userid = req.user.id;
 	const sql =
-		'select articles.*,article_cate.name,user.nickname from articles,article_cate,user where articles.id = ? and articles.state = 1 and articles.ispub = "发布" and user.id = articles.authorid and article_cate.id = articles.categoryid'
+		'select articles.*,article_cate.name,user.nickname from articles,article_cate,user where articles.id = ? and articles.state = 1 and user.id = articles.authorid and article_cate.id = articles.categoryid'
 	db.query(sql, req.params.id, (err, result) => {
 		if (err) return res.send({
 			code: 500,
 			message: '数据库异常' + err.message
 		})
+		if (result.length < 1) {
+			return res.send({
+				code: 404,
+				message: '文章不存在'
+			})
+		}
 		result[0] = {
 			id: result[0].id,
 			title: result[0].title,
@@ -141,7 +148,15 @@ exports.getsomearticle = (req, res) => {
 			first_pub: result[0].firstpub,
 			last_pub: result[0].lastpub
 		}
-		res.send({
+		if (result[0].ispub === '草稿') {
+			if (result[0].author.id != userid) {
+				return res.send({
+					code: 1003,
+					message: '暂无权限',
+				})
+			}
+		}
+		return res.send({
 			code: 200,
 			message: '查询文章成功',
 			data: result
@@ -180,7 +195,7 @@ exports.deletearticle = (req, res) => {
 //获取某人的发布文章
 exports.getmypubarticle = (req, res) => {
 	const sql =
-		'select articles.*,article_cate.name,user.nickname from articles,article_cate,user where articles.state = 1 and articles.ispub = "发布" and user.id = articles.authorid and article_cate.id = articles.categoryid and articles.authorid = ? order by articles.first_pub asc'
+		'select articles.*,article_cate.name,user.nickname from articles,article_cate,user where articles.state = 1 and articles.ispub = "发布" and user.id = articles.authorid and article_cate.id = articles.categoryid and articles.authorid = ? order by articles.firstpub asc'
 	db.query(sql, req.params.id, (err, result) => {
 		if (err) return res.send({
 			code: 500,

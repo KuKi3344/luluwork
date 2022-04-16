@@ -4,6 +4,8 @@ const router = express.Router()
 const userinfohandler = require('../router_handler/userinfo')
 //获取用户信息
 router.get('/userinfo',userinfohandler.getuserinfo)
+//获取某人用户信息
+router.get('/someoneinfo/:id',userinfohandler.getsomeoneinfo)
 //更新用户信息
 router.post('/updateinfo',userinfohandler.updateinfo)
 //重置密码

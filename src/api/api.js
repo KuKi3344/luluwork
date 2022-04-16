@@ -31,6 +31,12 @@ export function getuserinfo(){
 		url:`${base}/my/userinfo`
 	})
 }
+export function getsomeoneinfo(id){
+	return axios({
+		method:'get',
+		url:`${base}/my/someoneinfo/${id}`
+	})
+}
 export function getarticle(){
 	return axios({
 		method:'get',
@@ -112,5 +118,31 @@ export function publisharticle(data){
 		method:'post',
 		url:`${base}/article/publish`,
 		data:data
+	})
+}
+export function getsomeonearticle(id){
+	return axios({
+		method:'get',
+		url:`${base}/article/author/${id}`,
+	})
+}
+export function updatename(data){
+	return axios({
+		method:'post',
+		url:`${base}/my/updateinfo`,
+		data:data
+	})
+}
+export function updatepwd(data){
+	return axios({
+		method:'post',
+		url:`${base}/my/updatepwd`,
+		data:data
+	})
+}
+export function getnopub(){
+	return axios({
+		method:'get',
+		url:`${base}/my/article/nopub`,
 	})
 }

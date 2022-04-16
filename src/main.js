@@ -71,6 +71,7 @@ router.beforeEach((to, from, next) => {
 			next();
 		} else {
 			Message.error("请先登录");
+			next({path:'/Login'})
 		}
 	}
 })

@@ -22,14 +22,30 @@ exports.getuserinfo = (req, res) => {
 		})
 	})
 }
-//更新信息(昵称和邮箱)
+//获取某人信息
+exports.getsomeoneinfo = (req, res) => {
+	let result = req.params.id;
+	const sql = 'select * from user where id = ?'
+	db.query(sql, result, (err, result) => {
+		if (err) return res.send({
+			code: 500,
+			message: '数据库异常'
+		})
+		if (result.length !== 1) return res.send({
+			code: 1001,
+			message: '用户状态异常，获取信息失败'
+		})
+		result[0].password = '********'
+		res.send({
+			code: '200',
+			message: '获取用户信息成功',
+			data: result[0]
+		})
+	})
+}
+//更新信息(昵称)
 exports.updateinfo = (req, res) => {
 	const body = req.body
-	var regemail = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
-	if (!regemail.test(body.email)) return res.send({
-		code: 1001,
-		message: '邮箱验证错误'
-	})
 	if (body.nickname.length < 1 || body.nickname.length > 20) return res.send({
 		code: 1001,
 		message: '昵称长度异常'
@@ -120,7 +136,7 @@ exports.updateavatar = (req, res) => {
 //获取我的草稿
 exports.getnopub = (req, res) => {
 	const sql =
-		'select articles.*,article_cate.name,user.nickname from articles,article_cate,user where articles.state = 1 and articles.ispub = "草稿" and user.id = articles.authorid and article_cate.id = articles.categoryid and articles.authorid = ? order by articles.first_pub asc'
+		'select articles.*,article_cate.name,user.nickname from articles,article_cate,user where articles.state = 1 and articles.ispub = "草稿" and user.id = articles.authorid and article_cate.id = articles.categoryid and articles.authorid = ? order by articles.firstpub asc'
 	db.query(sql, req.user.id, (err, result) => {
 		if (err) return res.send({
 			code: 500,

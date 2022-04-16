@@ -3,7 +3,7 @@
 		<div class="articleview">
 			<div class="top">
 				<div class="title">{{article.title}}</div>
-				<div class="summary">{{article.summary}}</div>
+				<div class="summary">简介:&ensp;{{article.summary}}</div>
 				<div class="category">
 					{{article.category.name}}&ensp;&ensp;|&ensp;&ensp;评论数:{{comment.length}}&ensp;&ensp;|&ensp;{{article.first_pub | format}}
 				</div>
@@ -117,7 +117,7 @@
 					if (resp.data.code == 200) {
 						this.article = resp.data.data[0];
 					} else {
-						this.$message.warning('文章加载失败');
+						this.$message.warning(resp.data.message);
 					}
 				})
 			},

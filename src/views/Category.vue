@@ -163,12 +163,9 @@
 					}
 				})
 			},
-			changecategory(id, name) {
+			changecategory(id) {
 				this.$router.push({
 					path: `/category/all/${id}`,
-					query: {
-						name: name
-					}
 				})
 			},
 			listcategory() {
