@@ -35,7 +35,7 @@
 		},
 		methods: {
 			getconnect(username, nickname, face) {
-				var socket = new WebSocket('wss://www.blog.googookuki.cn/wss')
+				var socket = new WebSocket('ws://localhost:3000')
 				var div = document.getElementsByClassName('chatmain')[0];
 				var send = document.getElementsByClassName('send')[0];
 				var input = document.getElementsByClassName('article-content')[0];
