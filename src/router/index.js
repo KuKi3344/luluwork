@@ -51,6 +51,11 @@ const routes = [{
 				name: '文章分类',
 				component: () => import( /* webpackChunkName: "about" */ '../views/Userinfo.vue')
 			},
+			{
+				path: '/chat',
+				name: '聊天室',
+				component: () => import( /* webpackChunkName: "about" */ '../views/chat.vue')
+			},
 		]
 	},
 

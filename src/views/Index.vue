@@ -6,7 +6,10 @@
 		</div>
 		<homehead  class="homeheader"></homehead>
 		<div style="margin-left: 200px;margin-right: 30px;">
-			<router-view></router-view>
+			<keep-alive include="Home,chat">
+				<router-view></router-view>
+			</keep-alive>
+			
 		</div>
 		
 	</div>

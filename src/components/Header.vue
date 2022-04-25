@@ -21,6 +21,7 @@
 							class="el-icon-user-solid"></i>
 						<span>个人中心</span>
 					</el-menu-item>
+					<el-menu-item index="/chat"><i class="el-icon-chat-dot-square"></i>在线聊天室</el-menu-item>
 				</el-menu>
 			</div>
 			<div class="right">
@@ -68,7 +69,9 @@
 		padding: 0;
 		font-size: 15px;
 	}
-
+	.el-icon-chat-dot-square{
+		color: #51e7c7;
+	}
 	.el-icon-s-home {
 		color: #01cec4 !important;
 	}
